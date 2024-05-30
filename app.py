@@ -1,11 +1,10 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify
 import tensorflow as tf
 import numpy as np
 import os
 from werkzeug.utils import secure_filename
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
-from flask import render_template
 
 app = Flask(__name__)
 
@@ -14,7 +13,11 @@ model = tf.keras.models.load_model('tomato_model.h5')
 labels_dir = "tomato_dataset/train"
 class_labels = sorted(os.listdir(labels_dir))
 
-app.config['UPLOAD_FOLDER'] = 'static/uploads'
+UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg'}
 
 def allowed_file(filename):
@@ -33,7 +36,6 @@ def predict():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return render_template('predict.html', filename=filename)
         
         try:
             img_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
