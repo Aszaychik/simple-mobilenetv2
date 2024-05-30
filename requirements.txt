@@ -1,8 +1,8 @@
 numpy
 pandas
-scikit-learn
+zipfile
 tensorflow
-keras
+matplotlib
 ipykernel
 kaggle
 pillow
