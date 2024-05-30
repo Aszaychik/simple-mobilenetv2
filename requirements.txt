@@ -1,8 +1,9 @@
 numpy
 pandas
-zipfile
 tensorflow
 matplotlib
 ipykernel
 kaggle
 pillow
+flask
+werkzeug
